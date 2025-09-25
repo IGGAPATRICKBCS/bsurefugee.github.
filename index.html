@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Refugee Training Application | Bishop Stuart University</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #2a4d69;
+      --secondary-color: #4b86b4;
+      --accent-color: #63ace5;
+      --light-color:navy blue;
+      --dark-color: #2a3a4a;
+      --text-color: #333;
+      --shadow-light: #ffffff;
+      --shadow-dark: #bebebe;
+      --success-color: #4CAF50;
+      --error-color: #f44336;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--light-color);
+      color: var(--text-color);
+      line-height: 1.6;
+    }
+
+    header {
+      background-color: var(--primary-color);
+      color: deepskyblue;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .logo-container img {
+      height: 70px;
+    }
+
+    .header-title h1 {
+      font-size: 1.5rem;
+    }
+
+    .header-title p {
+      font-size: 0.9rem;
+    }
+
+    .admin-login-btn {
+      background-color:rgb(226, 17, 17);
+      color: white;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .admin-login-btn:hover {
+      background-color:white;
+      color:rgb(0, 128, 90);
+    }
+
+    .hero {
+      height: 300px;
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      color:rgb(0, 255, 98);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+      flex-direction: column;
+    }
+
+    .hero-content h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .apply-now-btn {
+      background-color: rgb(255, 0, 55);
+      color: var(--primary-color);
+      border: none;
+      padding: 0.8rem 2rem;
+      border-radius: 30px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      margin-top: 1rem;
+    }
+
+    .apply-now-btn:hover {
+      background-color: var(--accent-color);
+      color: orange;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+
+    .application-form {
+      background-color: rgb(10, 195, 228);
+      border-radius: 15px;
+      padding: 2rem;
+      box-shadow: 8px 8px 15px var(--shadow-dark), -8px -8px 15px var(--shadow-light);
+    }
+
+    .application-form h2 {
+      color: var(--primary-color);
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-group.full-width {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 0.8rem;
+      border: none;
+      border-radius: 8px;
+      background-color: var(--light-color);
+      box-shadow: inset 3px 3px 6px var(--shadow-dark), inset -3px -3px 6px var(--shadow-light);
+      font-family: inherit;
+    }
+
+    .submit-btn {
+      background-color:deeppink;
+      color:orange;
+      border: none;
+      padding: 1rem;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      display: block;
+      margin: 2rem auto 0;
+      width: 50%;
+      transition: all 0.3s ease;
+      box-shadow: 3px 3px 6px var(--shadow-dark);
+    }
+
+    .submit-btn:hover {
+      background-color: rgb(255, 0, 0);
+      transform: translateY(-2px);
+    }
+
+    /* Admin Login Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: palegreen;
+      overflow: auto;
+    }
+
+    .modal-content {
+      background-color: var(--light-color);
+      margin: 10% auto;
+      padding: 2rem;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      position: relative;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--dark-color);
+    }
+
+    /* Status message */
+    .status-message {
+      padding: 1rem;
+      margin: 1rem 0;
+      border-radius: 5px;
+      text-align: center;
+      display: none;
+    }
+
+    .status-message.success {
+      background-color: #d4edda;
+      color: #155724;
+      display: block;
+    }
+
+    .status-message.error {
+      background-color: #f8d7da;
+      color: #721c24;
+      display: block;
+    }
+
+    footer {
+      background-color: var(--dark-color);
+      color: white;
+      text-align: center;
+      padding: 1.5rem 0;
+      margin-top: 3rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo-container">
+      <img src="images/BSU-logo.png" alt="BSU Logo">
+      <div class="header-title">
+        <h1>BISHOP STUART UNIVERSITY </h1>
+        <h1>Our God Reigns</h1>
+        <p>Refugee Training Program system</Portal></p>
+      </div>
+    </div>
+    <button class="admin-login-btn" id="adminLoginBtn">
+      <i class="fas fa-lock"></i> Login
+    </button>
+  </header>
+
+  <section class="hero">
+    <div class="hero-content">
+      <h2>Empowering Refugees Through Education At Bishop Stuart University</h2>
+      <p>Bishop Stuart university is implementing the Refugee abd Host community Youth empowerment and Transformation Initiative Program</p>
+      <p>Improve access to quality education and skills development for refugess </p>
+      <p>If You Wish to Apply with us  </p>
+      <p>TThen click on Apply with us Now</p>
+      <p></p>
+      <button class="apply-now-btn" id="applyNowBtn">
+        Apply with Us Now<i class="fas fa-arrow-down"></i>
+      </button>
+    </div>
+  </section>
+
+  <div class="container">
+    <div class="application-form" id="applicationForm">
+      <h2><i class="fas fa-user-graduate"></i> BSU Refugee Training Program Application Form </h2>
+      <div id="statusMessage" class="status-message"></div>
+      <form id="trainingApplicationForm" enctype="multipart/form-data">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="name">*Full Name(firstname and last name)*</label>
+            <input type="text" id="name" name="name" required>
+          </div>
+          <div class="form-group">
+            <label for="dob">*Date of Birth(month/date/year) *</label>
+            <input type="date" id="dob" name="dob" required>
+          </div>
+          <div class="form-group">
+            <label for="email">*Email adress(@) *</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+          <div class="form-group">
+            <label for="phone">*Phone Number(Tel) *</label>
+            <input type="tel" id="phone" name="phone" required>
+          </div>
+          <div class="form-group">
+            <label for="country">*Country of Origin(Not Uganda) *</label>
+            <input type="text" id="country" name="country" required>
+          </div>
+          <div class="form-group">
+            <label for="language">*Language spoken(Your common languange) *</label>
+            <select id="language" name="language" required>
+              <option value="">-- Select --</option>
+              <option value="english">English</option>
+              <option value="swahili">Swahili</option>
+              <option value="arabic">Arabic</option>
+              <option value="french">Rwandese</option>
+              <option value="french">chinese</option>
+              <option value="french">latin</option>
+              <option value="french">french</option>
+              <option value="french">Spanish</option>
+              
+            </select>
+          </div>
+          <div class="form-group full-width">
+            <label for="program">*Program you wish To study(choose) *</label>
+            <select id="program" name="program" required>
+              <option value="">-- Select Program --</option>
+              <option value="computer-skills">Basic Computer Skills</option>
+              <option value="language">Language Training</option>
+              <option value="vocational">Vocational Training</option>
+              <option value="business">Catering</option>
+              <option value="business">Education</option>
+              <option value="business">Tailoring</option>
+              <option value="business">marketing</option>
+              <option value="business">Entrepreneurship & Business</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="education_level">*Level of Education(primary,secondary,alevel,other) *</label>
+            <input type="text" id="education_level" name="education_level" required>
+          </div>
+          <div class="form-group full-width">
+            <label for="id_document">*Passport photo Upload ID *</label>
+            <input type="file" id="id_document" name="id_document" accept=".jpg,.jpeg,.png,.pdf" required>
+          </div>
+          <div class="form-group full-width">
+            <label for="academic_document">*Upload Academic Document(certificates) *</label>
+            <input type="file" id="academic_document" name="academic_document" accept=".jpg,.jpeg,.png,.pdf" required>
+          </div>
+          <div class="form-group full-width">
+            <label for="background"> Family and Historical Background(simple text)</label>
+            <textarea id="background" name="background" rows="3"></textarea>
+          </div>
+        </div>
+        <button type="submit" class="submit-btn">
+          <i class="fas fa-paper-plane"></i> Submit Your Application
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Admin Login Modal -->
+  <div id="adminLoginModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" id="closeModal">&times;</span>
+      <div id="loginStatusMessage" class="status-message"></div>
+      <form id="adminLoginForm">
+        <h2><i class="fas fa-user-shield"></i> Administrators Login form</h2>
+        <div class="form-group">
+          <label for="adminEmail">*Email Address *</label>
+          <input type="email" id="adminEmail" name="email" required>
+        </div>
+        <div class="form-group">
+          <label for="adminPassword">*Password *</label>
+          <input type="password" id="adminPassword" name="password" required>
+        </div>
+        <button type="submit" class="submit-btn">
+          <i class="fas fa-sign-in-alt"></i> Login
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; <?php echo date('Y'); ?> Bishop Stuart University Refugee Training system</p>
+    <p>&copy; <?php echo date('Y'); ?> karyangoedwin@gmail.com</p>
+    <p>&copy; <?php echo date('Y'); ?> edsonniwamanya526@gmail.com</p>
+    <p>&copy; <?php echo date('Y'); ?> Empower and Educate refugees</p>
+    <p>GET IN TOUCH WITH US</p>
+    
+  </footer>
+
+  <script>
+    // DOM Elements
+    const adminLoginBtn = document.getElementById('adminLoginBtn');
+    const adminLoginModal = document.getElementById('adminLoginModal');
+    const closeModal = document.getElementById('closeModal');
+    const adminLoginForm = document.getElementById('adminLoginForm');
+    const applicationForm = document.getElementById('applicationForm');
+    const trainingApplicationForm = document.getElementById('trainingApplicationForm');
+    const applyNowBtn = document.getElementById('applyNowBtn');
+    const statusMessage = document.getElementById('statusMessage');
+    const loginStatusMessage = document.getElementById('loginStatusMessage');
+
+    // Show admin login modal
+    adminLoginBtn.addEventListener('click', () => {
+      adminLoginModal.style.display = 'block';
+    });
+
+    // Close modal when clicking X
+    closeModal.addEventListener('click', () => {
+      adminLoginModal.style.display = 'none';
+    });
+
+    // Close modal when clicking outside
+    window.addEventListener('click', (e) => {
+      if (e.target === adminLoginModal) {
+        adminLoginModal.style.display = 'none';
+      }
+    });
+
+    // Handle admin login form submission
+    adminLoginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const formData = new FormData(adminLoginForm);
+      
+      try {
+        const response = await fetch('admin_login.php', {
+          method: 'POST',
+          body: formData
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+          // Redirect to admin dashboard
+          window.location.href = 'admin_dashboard.php';
+        } else {
+          showLoginMessage(data.message, 'error');
+        }
+      } catch (error) {
+        showLoginMessage('An error occurred. Please try again.', 'error');
+      }
+    });
+
+    // Handle application form submission
+    trainingApplicationForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const formData = new FormData(trainingApplicationForm);
+      
+      try {
+        const response = await fetch('applicant_submit.php', {
+          method: 'POST',
+          body: formData
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+          showMessage('Application submitted successfully!', 'success');
+          trainingApplicationForm.reset();
+        } else {
+          showMessage(data.message, 'error');
+        }
+      } catch (error) {
+        showMessage('An error occurred. Please try again.', 'error');
+      }
+    });
+
+    // Handle Apply Now button click
+    applyNowBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      applicationForm.scrollIntoView({ behavior: 'smooth' });
+    });
+
+    // Helper function to show status messages
+    function showMessage(message, type) {
+      statusMessage.textContent = message;
+      statusMessage.className = `status-message ${type}`;
+      
+      // Hide message after 5 seconds
+      setTimeout(() => {
+        statusMessage.style.display = 'none';
+      }, 5000);
+    }
+
+    function showLoginMessage(message, type) {
+      loginStatusMessage.textContent = message;
+      loginStatusMessage.className = `status-message ${type}`;
+    }
+  </script>
+</body>
+</html>
